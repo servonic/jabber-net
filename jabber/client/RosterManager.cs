@@ -284,11 +284,11 @@ namespace jabber.client
                 }
                 break;
             case PresenceType.subscribed:
-                // This is the new ack case.
-                Presence sub_ack = new Presence(m_stream.Document);
-                sub_ack.To = pres.From;
-                sub_ack.Type = PresenceType.subscribe;
-                Write(sub_ack);                
+                // RFC 6121, does not specify to answer subscribed with subscribe, but does specify the server to answer a subcribe with subecribed -> endless loop
+                // Presence sub_ack = new Presence(m_stream.Document);
+                // sub_ack.To = pres.From;
+                // sub_ack.Type = PresenceType.subscribe;
+                // Write(sub_ack);                
                 break;
             case PresenceType.unsubscribe:
                 // ack.  we'll likely get an unsubscribed soon, anyway.
