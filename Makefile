@@ -15,6 +15,7 @@
 # The purpose of this Makefile is to facilitate mono builds.
 
 DEBUG = -debug
+RELEASE = -debug-
 BASEDIR = $(CURDIR)
 
 SOURCES = \
@@ -174,24 +175,35 @@ SYSTEM_REFERENCES = -r:zlib.net.dll \
 					-r:Mono.Security.dll
 
 DEBUGDIR = $(BASEDIR)/bin/debug
+RELEASEDIR = $(BASEDIR)/bin/release
 
 MCS=gmcs
 
 MCS_OPTIONS = -lib:$(DEBUGDIR),$(BASEDIR)/lib20 $(DEBUG) -define:DEBUG
+MCS_OPTIONSRELEASE = -lib:$(RELEASEDIR),$(BASEDIR)/lib20 $(RELEASE) -define:RELEASE
 
 ASSEMBLIES =
 DLL = $(DEBUGDIR)/jabber-net.dll
+DLL_RELEASE = $(RELEASEDIR)/jabber-net.dll
 
 SUBDIRS = ConsoleClient test
 .PHONY: all clean $(SUBDIRS)
 
-all:  $(DLL) $(SUBDIRS)
+all:  $(DLL) $(SUBDIRS) $(DLL_RELEASE)
 
 dll : $(DLL)
 
 $(DLL): $(SOURCES)
 	-mkdir -p bin/debug
 	$(MCS) $(MCS_OPTIONS) -target:library \
+	-out:"$@" $(RESOURCES) $(SYSTEM_REFERENCES) \
+	$^ $(ASSEMBLIES) 
+
+dll_release: $(DLL_RELEASE)
+
+$(DLL_RELEASE): $(SOURCES)
+	-mkdir -p bin/release
+	$(MCS) $(MCS_OPTIONSRELEASE) -target:library \
 	-out:"$@" $(RESOURCES) $(SYSTEM_REFERENCES) \
 	$^ $(ASSEMBLIES) 
 
