@@ -491,8 +491,23 @@ namespace jabber.protocol.iq
         /// </summary>
         public string Named
         {
-            get { return GetAttr("name"); }
-            set { SetAttr("name", value); }
+            get
+            {
+                if (!HasAttribute("name"))
+                    return null;
+                return GetAttribute("name");
+            }
+            set
+            {
+                if (HasAttribute("name"))
+                    RemoveAttribute("name");
+                if (!String.IsNullOrEmpty(value))
+                {
+                    XmlAttribute attr = OwnerDocument.CreateAttribute("name");
+                    attr.Value = value;
+                    this.Attributes.Append(attr);
+                }
+            }
         }
 
         /// <summary>

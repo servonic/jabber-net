@@ -124,7 +124,7 @@ namespace jabber.protocol
             {
                 if (HasAttribute("lang", URI.XML))
                     RemoveAttribute("lang", URI.XML);
-                if (value != null)
+                if (!String.IsNullOrEmpty(value))
                 {
                     XmlAttribute attr = OwnerDocument.CreateAttribute("xml:lang", URI.XML);
                     attr.Value = value;
