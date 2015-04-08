@@ -336,10 +336,14 @@ namespace jabber.client
         {
             if (IsAuthenticated)
             {
-                Presence p = new Presence(Document);
-                p.Type = PresenceType.unavailable;
-                p.Status = "offline";
-                Write(p);
+                //only set presence if autopresence is enabled
+                if (this.AutoPresence)
+                {
+                    Presence p = new Presence(Document);
+                    p.Type = PresenceType.unavailable;
+                    p.Status = "offline";
+                    Write(p);
+                }
             }
             base.Close();
         }
