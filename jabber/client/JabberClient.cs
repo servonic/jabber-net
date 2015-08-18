@@ -407,9 +407,14 @@ namespace jabber.client
                 {
                     p.Type = t;
                 }
-                if (show != null)
-                    p.Show = show;
-                p.Priority = priority.ToString();
+
+		// issue #4: unavailable presence must not contain <show/> or <priority/>
+                if (t != PresenceType.unavailable)
+                {
+                    if (show != null)
+                        p.Show = show;
+                    p.Priority = priority.ToString();
+                }
 
                 if (OnBeforePresenceOut != null)
                     OnBeforePresenceOut(this, p);
